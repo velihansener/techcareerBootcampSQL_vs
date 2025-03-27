@@ -121,12 +121,13 @@ SELECT * FROM nortwind.dbo.Customers
 go
 
 CREATE PROCEDURE musteri
-		@CountryName NVARCHAR(50)
+		(@CountryName NVARCHAR(50))
 	AS
+	BEGIN
 		SELECT cus.CustomerID, cus.CompanyName, cus.ContactName, cus.Country
 		FROM nortwind.dbo.Customers cus
 		WHERE Country = @CountryName;
-
+	END
 
 EXEC musteri 'Mexico';
 
@@ -258,8 +259,13 @@ WHERE O.EmployeeID =5
 
 -- 23. Hiç siparişi olmayan müşterileri listeleyin.
 
-SELECT DISTINCT CustomerID FROM nortwind.dbo.Orders
+SELECT * FROM nortwind.dbo.Orders
 SELECT * FROM nortwind.dbo.Customers
+
+SELECT ord.OrderID,ord.CustomerID,cus.CompanyName 
+FROM Orders ord
+RIGHT JOIN Customers cus ON cus.CustomerID=ord.CustomerID
+WHERE ord.OrderID IS NULL
 
 -- 24. Siparişlerin Nakliye (Freight) Maliyeti Analizi:  
 -- Nakliye maliyetine göre en pahalı 5 siparişi listeleyin
